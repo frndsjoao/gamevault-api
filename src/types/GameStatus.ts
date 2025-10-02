@@ -1,1 +1,1 @@
-export const GameStatus = ["Wishlist", "Replay", "Playing", "On Hold", "Abandoned", "Completed"]
+export const GameStatus = ["Backlog", "Replay", "Playing", "On Hold", "Abandoned", "Completed"]

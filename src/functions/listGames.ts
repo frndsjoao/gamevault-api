@@ -7,7 +7,12 @@ import { ListGamesController } from "../controllers/ListGamesController"
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
     const request = parseProtectedEvent(event)
-    const response = await ListGamesController.handle(request)
+    const filter = event.queryStringParameters?.filter as "backlog" | "notBacklog" | undefined;
+    const page = event.queryStringParameters?.page
+      ? parseInt(event.queryStringParameters.page)
+      : 1;
+
+    const response = await ListGamesController.handle({ ...request, page, filter })
 
     return parseResponse(response)
   } catch (error) {
