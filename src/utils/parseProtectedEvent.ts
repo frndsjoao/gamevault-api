@@ -14,8 +14,6 @@ export function parseProtectedEvent(event: APIGatewayProxyEventV2): ProtectedHtt
   const [, token] = authorization.split(' ')
   const userId = validateAccessToken(token)
 
-  console.log(token)
-
   if (!userId) {
     throw new Error("Invalid access token.")
   }

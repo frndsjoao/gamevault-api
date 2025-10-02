@@ -58,6 +58,13 @@ functions:
           path: /games
           method: post
 
+  updateGameById:
+    handler: src/functions/updateGameById.handler
+    events:
+      - http:
+          path: /games/{gameId}
+          method: put
+
   listGames:
     handler: src/functions/listGames.handler
     events:

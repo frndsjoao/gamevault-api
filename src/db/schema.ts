@@ -7,8 +7,8 @@ export const gamesTable = pgTable('games', {
   platform: varchar('platform', { length: 50 }),
   rating: doublePrecision('rating'),
   platinum: boolean('platinum').default(false),
+  finishedAt: date('finishedAt'),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
-  updatedAt: timestamp('updatedAt').defaultNow().notNull(),
 });
 
 export const usersTable = pgTable("users", {

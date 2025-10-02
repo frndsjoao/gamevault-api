@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { gamesTable } from "../db/schema";
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
@@ -9,8 +9,9 @@ export class ListGamesController {
     const db = getDb();
 
     const games = await db.query.gamesTable.findMany({
-      columns: { name: true, platform: true, rating: true, platinum: true },
-      where: eq(gamesTable.userId, userId)
+      columns: { name: true, platform: true, rating: true, platinum: true, id: true },
+      where: eq(gamesTable.userId, userId),
+      orderBy: desc(gamesTable.createdAt)
     })
 
     return ok({ games })
