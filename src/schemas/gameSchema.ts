@@ -15,3 +15,8 @@ export const signUpschema = z.object({
   birthDate: z.iso.date(),
   preferredPlatform: z.enum(Platforms)
 })
+
+export const signInschema = z.object({
+  email: z.email(),
+  password: z.string().min(8),
+})

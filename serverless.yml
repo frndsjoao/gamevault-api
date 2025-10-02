@@ -35,14 +35,20 @@ build:
     external:
       - bcryptjs
       - jsonwebtoken
-      - '@neondatabase/serverless'
+      - "@neondatabase/serverless"
 
 functions:
   signUp:
     handler: src/functions/auth/signUp.handler
     events:
       - http:
-          path: /users
+          path: /signup
+          method: post
+  signIn:
+    handler: src/functions/auth/signIn.handler
+    events:
+      - http:
+          path: /signin
           method: post
 
   createGame:
