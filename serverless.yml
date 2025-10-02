@@ -57,3 +57,10 @@ functions:
       - http:
           path: /games
           method: post
+
+  listGames:
+    handler: src/functions/listGames.handler
+    events:
+      - http:
+          path: /games
+          method: get
