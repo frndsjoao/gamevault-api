@@ -5,7 +5,7 @@ import { validateAccessToken } from "../lib/jwt";
 
 export function parseProtectedEvent(event: APIGatewayProxyEventV2): ProtectedHttpRequest {
   const baseEvent = parseEvent(event)
-  const { authorization } = event.headers
+  const authorization = event.headers.authorization || event.headers.Authorization
 
   if (!authorization) {
     throw new Error("Access token not provided.")
@@ -16,7 +16,7 @@ export function parseProtectedEvent(event: APIGatewayProxyEventV2): ProtectedHtt
 
   console.log(token)
 
-  if (!userId) { 
+  if (!userId) {
     throw new Error("Invalid access token.")
   }
 

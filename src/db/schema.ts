@@ -7,8 +7,8 @@ export const gamesTable = pgTable('games', {
   platform: varchar('platform', { length: 50 }),
   rating: doublePrecision('rating'),
   platinum: boolean('platinum').default(false),
-  created_at: timestamp('created_at').defaultNow().notNull(),
-  updated_at: timestamp('updated_at').defaultNow().notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt').defaultNow().notNull(),
 });
 
 export const usersTable = pgTable("users", {
@@ -17,6 +17,6 @@ export const usersTable = pgTable("users", {
   email: varchar({ length: 255 }).notNull().unique(),
   password: varchar({ length: 255 }).notNull(),
   birthDate: date("birth_date").notNull(),
-  preferred_platform: varchar('platform', { length: 50 }),
-  created_at: timestamp('created_at').defaultNow().notNull(),
+  preferredPlatform: varchar('preferredPlatform', { length: 50 }),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
 })
