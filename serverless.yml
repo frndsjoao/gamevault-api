@@ -78,3 +78,10 @@ functions:
       - http:
           path: /games/{gameId}
           method: get
+
+  deleteGameById:
+    handler: src/functions/deleteGameById.handler
+    events:
+      - http:
+          path: /games/{gameId}
+          method: delete
