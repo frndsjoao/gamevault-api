@@ -9,7 +9,7 @@ export class ListGamesController {
     const db = getDb();
 
     const games = await db.query.gamesTable.findMany({
-      columns: { name: true, platform: true, rating: true, platinum: true, id: true },
+      columns: { name: true, platform: true, rating: true, platinum: true, id: true, status: true },
       where: eq(gamesTable.userId, userId),
       orderBy: desc(gamesTable.createdAt)
     })

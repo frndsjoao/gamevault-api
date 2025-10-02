@@ -9,7 +9,7 @@ export class ListGameByIdController {
     const db = getDb();
 
     const game = await db.query.gamesTable.findFirst({
-      columns: { id: true, name: true, platform: true, rating: true, platinum: true, finishedAt: true, createdAt: true },
+      columns: { id: true, name: true, platform: true, rating: true, platinum: true, finishedAt: true, createdAt: true, status: true },
       where: and(
         eq(gamesTable.userId, userId),
         eq(gamesTable.id, params.gameId)
