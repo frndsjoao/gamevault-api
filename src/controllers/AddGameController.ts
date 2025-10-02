@@ -2,11 +2,11 @@ import { getDb } from "../db";
 import { gamesTable } from "../db/schema";
 import { gameSchema } from "../schemas/gameSchema";
 import { parseSchemaErrors } from "../schemas/parseSchemaErrors";
-import { HttpRequest, HttpResponse } from "../types/Http"
+import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
 import { badRequest, created } from "../utils/http"
 
 export class AddGameController {
-  static async handle({ body }: HttpRequest): Promise<HttpResponse> {
+  static async handle({ userId, body }: ProtectedHttpRequest): Promise<HttpResponse> {
     const db = getDb();
     const { success, error } = gameSchema.safeParse(body)
 
@@ -15,6 +15,7 @@ export class AddGameController {
     }
 
     const [newGame] = await db.insert(gamesTable).values({
+      userId,
       name: body.name,
       platform: body.platform,
       rating: body.rating,

@@ -7,3 +7,11 @@ export const gameSchema = z.object({
   rating: z.number().min(0, { message: "Rating must be at least 0" }).max(5, { message: "Rating must be at most 5" }).refine((v) => Number.isFinite(v) && Number.isInteger(v * 2), { message: "Rating must be a multiple of 0.5", }).optional(),
   platinum: z.boolean().optional()
 })
+
+export const signUpschema = z.object({
+  name: z.string().min(1),
+  email: z.email(),
+  password: z.string().min(8),
+  birthDate: z.iso.date(),
+  preferredPlatform: z.enum(Platforms)
+})
