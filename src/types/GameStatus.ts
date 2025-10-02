@@ -1,0 +1,1 @@
+export const GameStatus = ["Wishlist", "Replay", "Playing", "On Hold", "Abandoned", "Completed"]

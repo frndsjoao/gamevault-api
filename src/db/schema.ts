@@ -5,6 +5,7 @@ export const gamesTable = pgTable('games', {
   userId: uuid("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
   name: varchar('name', { length: 255 }).notNull(),
   platform: varchar('platform', { length: 50 }),
+  status: varchar('status', { length: 50 }),
   rating: doublePrecision('rating'),
   platinum: boolean('platinum').default(false),
   finishedAt: date('finishedAt'),

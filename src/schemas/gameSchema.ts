@@ -1,9 +1,11 @@
+import { GameStatus } from "../types/GameStatus";
 import { Platforms } from "../types/Platforms";
 import z from "zod";
 
 export const gameSchema = z.object({
   name: z.string({ error: "Name are required." }).min(1, { error: "Invalid name." }),
   platform: z.enum(Platforms).optional(),
+  status: z.enum(GameStatus),
   rating: z
     .union([
       z.number()
@@ -16,7 +18,8 @@ export const gameSchema = z.object({
       z.null()
     ])
     .optional(),
-  platinum: z.boolean().optional()
+  platinum: z.boolean().optional(),
+  finishedAt: z.iso.date().nullable().optional()
 })
 
 export const signUpschema = z.object({
