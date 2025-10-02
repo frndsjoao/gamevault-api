@@ -1,0 +1,1 @@
+export const Platforms = ["Playstation", "PC", "Xbox", "Switch"] 

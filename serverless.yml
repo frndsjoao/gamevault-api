@@ -26,44 +26,44 @@ provider:
 
 functions:
   createGame:
-    handler: src/handlers/games.create
+    handler: src/functions/addGame.handler
     events:
       - http:
           path: games
           method: post
           cors: true
 
-  getGame:
-    handler: src/handlers/games.get
-    events:
-      - http:
-          path: games/{id}
-          method: get
-          cors: true
+  # getGame:
+  #   handler: src/handlers/games.get
+  #   events:
+  #     - http:
+  #         path: games/{id}
+  #         method: get
+  #         cors: true
 
-  listGames:
-    handler: src/handlers/games.list
-    events:
-      - http:
-          path: games
-          method: get
-          cors: true
+  # listGames:
+  #   handler: src/handlers/games.list
+  #   events:
+  #     - http:
+  #         path: games
+  #         method: get
+  #         cors: true
 
-  updateGame:
-    handler: src/handlers/games.update
-    events:
-      - http:
-          path: games/{id}
-          method: put
-          cors: true
+  # updateGame:
+  #   handler: src/handlers/games.update
+  #   events:
+  #     - http:
+  #         path: games/{id}
+  #         method: put
+  #         cors: true
 
-  deleteGame:
-    handler: src/handlers/games.deleteGame
-    events:
-      - http:
-          path: games/{id}
-          method: delete
-          cors: true
+  # deleteGame:
+  #   handler: src/handlers/games.deleteGame
+  #   events:
+  #     - http:
+  #         path: games/{id}
+  #         method: delete
+  #         cors: true
 
 custom:
   esbuild:

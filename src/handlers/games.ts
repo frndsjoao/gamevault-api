@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { eq } from 'drizzle-orm';
 import { getDb } from '../db/index.js';
-import { games } from '../db/schema.js';
+import { gamesTable } from '../db/schema.js';
 
 const headers = {
   'Content-Type': 'application/json',
