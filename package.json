@@ -1,0 +1,35 @@
+{
+  "name": "gamevault",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "serverless offline",
+    "deploy": "serverless deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.153",
+    "@types/node": "^24.6.2",
+    "drizzle-kit": "^0.31.5",
+    "esbuild": "^0.25.10",
+    "serverless": "^4.19.1",
+    "serverless-esbuild": "^1.55.1",
+    "serverless-offline": "^14.4.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.6"
+  }
+}

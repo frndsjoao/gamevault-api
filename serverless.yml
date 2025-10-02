@@ -1,0 +1,80 @@
+org: joaofernandesdev
+
+service: gamevault-api
+frameworkVersion: "4"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: "us-east-1"
+  runtime: nodejs22.x
+  architecture: arm64
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource:
+            - "arn:aws:logs:${self:provider.region}:*:log-group:/aws/lambda/*:*:*"
+
+functions:
+  createGame:
+    handler: src/handlers/games.create
+    events:
+      - http:
+          path: games
+          method: post
+          cors: true
+
+  getGame:
+    handler: src/handlers/games.get
+    events:
+      - http:
+          path: games/{id}
+          method: get
+          cors: true
+
+  listGames:
+    handler: src/handlers/games.list
+    events:
+      - http:
+          path: games
+          method: get
+          cors: true
+
+  updateGame:
+    handler: src/handlers/games.update
+    events:
+      - http:
+          path: games/{id}
+          method: put
+          cors: true
+
+  deleteGame:
+    handler: src/handlers/games.deleteGame
+    events:
+      - http:
+          path: games/{id}
+          method: delete
+          cors: true
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ["@neondatabase/serverless"]
+    target: "node22"
+    platform: "node"
+    concurrency: 10
+    format: "esm"
+    mainFields: ["module", "main"]
+    banner:
+      js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);'
