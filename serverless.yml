@@ -71,3 +71,10 @@ functions:
       - http:
           path: /games
           method: get
+
+  getGameById:
+    handler: src/functions/getGameById.handler
+    events:
+      - http:
+          path: /games/{gameId}
+          method: get
