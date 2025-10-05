@@ -36,5 +36,6 @@ export const signInschema = z.object({
 })
 
 export const searchGameQuerySchema = z.object({
-  query: z.string().min(1)
+  search: z.string().min(1),
+  platform: z.string().nullable().optional()
 })

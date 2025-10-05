@@ -94,4 +94,4 @@ functions:
     events:
       - http:
           path: /search
-          method: POST
+          method: get

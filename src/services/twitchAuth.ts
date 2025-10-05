@@ -1,6 +1,12 @@
 import { apiAuth } from './api'
 
-export async function getTwitchToken() {
+interface TwitchTokenResponse {
+  access_token: string
+  expires_in: number
+  token_type: string
+}
+
+export async function getTwitchToken(): Promise<TwitchTokenResponse> {
   const clientId = process.env.TWITCH_CLIENT_ID
   const clientSecret = process.env.TWITCH_CLIENT_SECRET
   const grantType = 'client_credentials'

@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2 } from "aws-lambda"
 import { parseResponse } from "../utils/parseResponse"
 import { unauthorized } from "../utils/http"
 import { parseProtectedEvent } from "../utils/parseProtectedEvent"
-import { SearchGameController } from "../controllers/searchGameController"
+import { SearchGameController } from "../controllers/SearchGameController"
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
@@ -11,6 +11,7 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
     return parseResponse(response)
   } catch (error) {
-    return parseResponse(unauthorized({ error: error }))
+    console.error('[SearchGame Error]', error)
+    return parseResponse(unauthorized({ error: error instanceof Error ? error.message : String(error) }))
   }
 }

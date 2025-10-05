@@ -19,5 +19,8 @@ export const usersTable = pgTable("users", {
   password: varchar({ length: 255 }).notNull(),
   birthDate: date("birth_date").notNull(),
   preferredPlatform: varchar('preferredPlatform', { length: 50 }),
+  twitchToken: varchar('twitch_token', { length: 255 }),
+  twitchTokenType: varchar('twitch_token_type', { length: 50 }),
+  twitchTokenExpireDate: timestamp('twitch_token_expiredate'),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
 })
