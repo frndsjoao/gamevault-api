@@ -14,6 +14,8 @@ provider:
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     JWT_SECRET: ${env:JWT_SECRET}
+    TWITCH_CLIENT_ID: ${env:TWITCH_CLIENT_ID}
+    TWITCH_CLIENT_SECRET: ${env:TWITCH_CLIENT_SECRET}
   iam:
     role:
       statements:
@@ -35,6 +37,7 @@ build:
     external:
       - bcryptjs
       - jsonwebtoken
+      - axios
       - "@neondatabase/serverless"
 
 functions:
@@ -85,3 +88,10 @@ functions:
       - http:
           path: /games/{gameId}
           method: delete
+
+  searchGame:
+    handler: src/functions/searchGame.handler
+    events:
+      - http:
+          path: /search
+          method: POST

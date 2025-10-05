@@ -8,6 +8,10 @@ export type ProtectedHttpRequest = HttpRequest & {
   userId: string
 }
 
+export type ProtectedIGDBHttpRequest = ProtectedHttpRequest & {
+  accessToken?: string
+}
+
 export type HttpResponse = {
   statusCode: number
   body?: Record<string, any>

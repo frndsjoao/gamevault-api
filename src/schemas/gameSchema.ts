@@ -4,7 +4,7 @@ import z from "zod";
 
 export const gameSchema = z.object({
   name: z.string({ error: "Name are required." }).min(1, { error: "Invalid name." }),
-  platform: z.enum(Platforms).optional(),
+  platform: z.enum(Platforms.map(p => p.name) as [string, ...string[]]).optional(),
   status: z.enum(GameStatus),
   rating: z
     .union([
@@ -27,10 +27,14 @@ export const signUpschema = z.object({
   email: z.email(),
   password: z.string().min(8),
   birthDate: z.iso.date(),
-  preferredPlatform: z.enum(Platforms)
+  preferredPlatform: z.enum(Platforms.map(p => p.name) as [string, ...string[]])
 })
 
 export const signInschema = z.object({
   email: z.email(),
   password: z.string().min(8),
+})
+
+export const searchGameQuerySchema = z.object({
+  query: z.string().min(1)
 })
