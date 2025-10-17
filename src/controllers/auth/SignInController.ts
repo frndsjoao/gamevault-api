@@ -14,7 +14,7 @@ export class SignInController {
     const { success, error, data } = signInschema.safeParse(body)
 
     if (!success) {
-      return badRequest({ error: parseSchemaErrors(error.issues) })
+      return badRequest({ errors: parseSchemaErrors(error.issues) })
     }
 
     const user = await db.query.usersTable.findFirst({
@@ -22,12 +22,12 @@ export class SignInController {
     })
 
     if (!user) {
-      return unauthorized({ error: "Invalid credentials." })
+      return unauthorized({ errors: ["Invalid credentials."] })
     }
 
     const isPasswordValid = await compare(data.password, user.password)
     if (!isPasswordValid) {
-      return unauthorized({ error: "Invalid credentials." })
+      return unauthorized({ errors: ["Invalid credentials."] })
     }
 
     const response = {
