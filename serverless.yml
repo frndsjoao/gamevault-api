@@ -16,6 +16,20 @@ provider:
     JWT_SECRET: ${env:JWT_SECRET}
     TWITCH_CLIENT_ID: ${env:TWITCH_CLIENT_ID}
     TWITCH_CLIENT_SECRET: ${env:TWITCH_CLIENT_SECRET}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowCredentials: false
   iam:
     role:
       statements:
@@ -47,12 +61,14 @@ functions:
       - http:
           path: /signup
           method: post
+          cors: true
   signIn:
     handler: src/functions/auth/signIn.handler
     events:
       - http:
           path: /signin
           method: post
+          cors: true
 
   createGame:
     handler: src/functions/addGame.handler
@@ -60,6 +76,7 @@ functions:
       - http:
           path: /games
           method: post
+          cors: true
 
   updateGameById:
     handler: src/functions/updateGameById.handler
@@ -67,6 +84,7 @@ functions:
       - http:
           path: /games/{gameId}
           method: put
+          cors: true
 
   listGames:
     handler: src/functions/listGames.handler
@@ -74,6 +92,7 @@ functions:
       - http:
           path: /games
           method: get
+          cors: true
 
   getGameById:
     handler: src/functions/getGameById.handler
@@ -81,6 +100,7 @@ functions:
       - http:
           path: /games/{gameId}
           method: get
+          cors: true
 
   deleteGameById:
     handler: src/functions/deleteGameById.handler
@@ -88,6 +108,7 @@ functions:
       - http:
           path: /games/{gameId}
           method: delete
+          cors: true
 
   searchGame:
     handler: src/functions/searchGame.handler
@@ -95,3 +116,4 @@ functions:
       - http:
           path: /search
           method: get
+          cors: true

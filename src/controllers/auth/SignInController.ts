@@ -14,7 +14,7 @@ export class SignInController {
     const { success, error, data } = signInschema.safeParse(body)
 
     if (!success) {
-      return badRequest({ errors: parseSchemaErrors(error.issues) })
+      return badRequest({ error: parseSchemaErrors(error.issues) })
     }
 
     const user = await db.query.usersTable.findFirst({
@@ -33,7 +33,11 @@ export class SignInController {
     const response = {
       accessToken: signAccessToken(user.id),
       name: user.name,
-      preferredPlatform: user.preferredPlatform
+      profilepic: user.profilepic,
+      email: user.email,
+      birthDate: user.birthDate,
+      preferredPlatform: user.preferredPlatform,
+      createdAt: user.createdAt,
     }
 
     return ok(response)

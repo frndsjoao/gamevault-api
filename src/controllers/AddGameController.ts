@@ -20,6 +20,9 @@ export class AddGameController {
       platform: body.platform,
       rating: body.rating,
       platinum: body.platinum,
+      cover: body.cover,
+      igdbId: body.igdbId,
+      status: body.status
     }).returning({ id: gamesTable.id });
 
     return created({ gameId: newGame.id, message: "Game added!" })

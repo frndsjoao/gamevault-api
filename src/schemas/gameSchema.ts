@@ -3,7 +3,9 @@ import { Platforms } from "../types/Platforms";
 import z from "zod";
 
 export const gameSchema = z.object({
-  name: z.string({ error: "Name are required." }).min(1, { error: "Invalid name." }),
+  igdbId: z.string().min(1),
+  name: z.string().min(1),
+  cover: z.string().nullable().optional(),
   platform: z.enum(Platforms.map(p => p.name) as [string, ...string[]]).optional(),
   status: z.enum(GameStatus),
   rating: z

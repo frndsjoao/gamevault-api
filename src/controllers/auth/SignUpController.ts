@@ -6,7 +6,6 @@ import { HttpRequest, HttpResponse } from "../../types/Http";
 import { badRequest, conflict, created } from "../../utils/http";
 import { usersTable } from "../../db/schema";
 import { hash } from "bcryptjs";
-import { signAccessToken } from "../../lib/jwt";
 
 export class SignUpController {
   static async handle({ body }: HttpRequest): Promise<HttpResponse> {
@@ -14,7 +13,7 @@ export class SignUpController {
     const { success, error, data } = signUpschema.safeParse(body)
 
     if (!success) {
-      return badRequest({ errors: parseSchemaErrors(error.issues) })
+      return badRequest({ error: parseSchemaErrors(error.issues) })
     }
 
     const userAlreadyExists = await db.query.usersTable.findFirst({
@@ -36,9 +35,9 @@ export class SignUpController {
       })
       .returning({ id: usersTable.id })
 
-    const accessToken = signAccessToken(user.id)
-
-
-    return created({ accessToken })
+    if (user.id) {
+      return created({ success: true })
+    }
+    return badRequest({ success: false, error: "Something went wrong" })
   }
 }
