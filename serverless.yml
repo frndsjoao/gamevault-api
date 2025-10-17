@@ -58,62 +58,55 @@ functions:
   signUp:
     handler: src/functions/auth/signUp.handler
     events:
-      - http:
+      - httpApi:
           path: /signup
           method: post
-          cors: true
+
   signIn:
     handler: src/functions/auth/signIn.handler
     events:
-      - http:
+      - httpApi:
           path: /signin
           method: post
-          cors: true
 
   createGame:
     handler: src/functions/addGame.handler
     events:
-      - http:
+      - httpApi:
           path: /games
           method: post
-          cors: true
 
   updateGameById:
     handler: src/functions/updateGameById.handler
     events:
-      - http:
+      - httpApi:
           path: /games/{gameId}
           method: put
-          cors: true
 
   listGames:
     handler: src/functions/listGames.handler
     events:
-      - http:
+      - httpApi:
           path: /games
           method: get
-          cors: true
 
   getGameById:
     handler: src/functions/getGameById.handler
     events:
-      - http:
+      - httpApi:
           path: /games/{gameId}
           method: get
-          cors: true
 
   deleteGameById:
     handler: src/functions/deleteGameById.handler
     events:
-      - http:
+      - httpApi:
           path: /games/{gameId}
           method: delete
-          cors: true
 
   searchGame:
     handler: src/functions/searchGame.handler
     events:
-      - http:
+      - httpApi:
           path: /search
           method: get
-          cors: true
