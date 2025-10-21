@@ -16,23 +16,25 @@ export async function getTwitchValidToken(userId: string) {
   })
 
   if (user?.twitchToken && user.twitchTokenExpireDate && user.twitchTokenExpireDate > new Date()) {
-    console.log("user: ", user.twitchToken)
     return user.twitchToken
   }
 
-  const newToken = await getTwitchToken()
-  const expiresAt = calculateTokenExpirationDate(newToken.expires_in)
+  try {
+    const newToken = await getTwitchToken()
+    const expiresAt = calculateTokenExpirationDate(newToken.expires_in)
 
-  await db
-    .update(usersTable)
-    .set({
-      twitchToken: newToken.access_token,
-      twitchTokenExpireDate: expiresAt,
-      twitchTokenType: newToken.token_type
-    })
-    .where(eq(usersTable.id, userId))
+    await db
+      .update(usersTable)
+      .set({
+        twitchToken: newToken.access_token,
+        twitchTokenExpireDate: expiresAt,
+        twitchTokenType: newToken.token_type
+      })
+      .where(eq(usersTable.id, userId))
 
-
-  console.log("new token: ", newToken.access_token)
-  return newToken.access_token
+    return newToken.access_token
+  } catch (error) {
+    console.error('[getTwitchValidToken] Failed to get token:', error)
+    throw error
+  }
 }

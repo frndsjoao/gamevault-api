@@ -69,6 +69,13 @@ functions:
           path: /signin
           method: post
 
+  getProfile:
+    handler: src/functions/auth/getProfile.handler
+    events:
+      - httpApi:
+          path: /profile
+          method: get
+
   createGame:
     handler: src/functions/addGame.handler
     events:
