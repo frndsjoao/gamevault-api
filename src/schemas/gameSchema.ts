@@ -1,5 +1,5 @@
+import { Platforms } from "../lib/handlePlatforms";
 import { GameStatus } from "../types/GameStatus";
-import { Platforms } from "../types/Platforms";
 import z from "zod";
 
 export const gameSchema = z.object({
