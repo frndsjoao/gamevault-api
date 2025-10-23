@@ -1,1 +1,9 @@
-export const GameStatus = ["Backlog", "Replay", "Playing", "On Hold", "Abandoned", "Completed"]
+export const GameStatus = [
+  "Backlog",
+  "Replay",
+  "Playing",
+  "Abandoned",
+  "Completed",
+]
+
+export type GameStatusType = (typeof GameStatus)[number]

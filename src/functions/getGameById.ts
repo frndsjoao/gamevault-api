@@ -1,6 +1,6 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda"
 import { parseResponse } from "../utils/parseResponse"
-import { unauthorized } from "../utils/http"
+import { badRequest } from "../utils/http"
 import { parseProtectedEvent } from "../utils/parseProtectedEvent"
 import { ListGameByIdController } from "../controllers/GetGameByIdController"
 
@@ -11,6 +11,6 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
     return parseResponse(response)
   } catch (error) {
-    return parseResponse(unauthorized({ error: "Invalid access token." }))
+    return parseResponse(badRequest({ error: "Something went wrong" }))
   }
 }

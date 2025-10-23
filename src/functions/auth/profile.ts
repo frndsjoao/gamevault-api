@@ -1,16 +1,16 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda"
 import { parseProtectedEvent } from "../../utils/parseProtectedEvent"
-import { GetProfileController } from "../../controllers/auth/GetProfileController"
+import { ProfileController } from "../../controllers/auth/ProfileController"
 import { parseResponse } from "../../utils/parseResponse"
-import { unauthorized } from "../../utils/http"
+import { badRequest } from "../../utils/http"
 
 export async function handler(event: APIGatewayProxyEventV2) {
   try {
     const request = parseProtectedEvent(event)
-    const response = await GetProfileController.handle(request)
+    const response = await ProfileController.handle(request)
 
     return parseResponse(response)
   } catch (error) {
-    return parseResponse(unauthorized({ error: "Invalid access token." }))
+    return parseResponse(badRequest({ error: "Something went wrong." }))
   }
 }

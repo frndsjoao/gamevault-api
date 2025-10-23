@@ -23,6 +23,7 @@
     "@types/node": "^24.6.2",
     "drizzle-kit": "^0.31.5",
     "esbuild": "^0.25.10",
+    "prettier": "^3.6.2",
     "serverless": "^4.19.1",
     "serverless-esbuild": "^1.55.1",
     "serverless-offline": "^14.4.0",

@@ -69,32 +69,46 @@ functions:
           path: /signin
           method: post
 
-  getProfile:
-    handler: src/functions/auth/getProfile.handler
+  profile:
+    handler: src/functions/auth/profile.handler
     events:
       - httpApi:
           path: /profile
           method: get
 
-  createGame:
+  addGame:
     handler: src/functions/addGame.handler
     events:
       - httpApi:
           path: /games
           method: post
 
-  updateGameById:
+  updateGame:
     handler: src/functions/updateGameById.handler
     events:
       - httpApi:
           path: /games/{gameId}
           method: put
 
-  listGames:
+  deleteGame:
+    handler: src/functions/deleteGameById.handler
+    events:
+      - httpApi:
+          path: /games/{gameId}
+          method: delete
+
+  games:
     handler: src/functions/listGames.handler
     events:
       - httpApi:
           path: /games
+          method: get
+
+  dashboard:
+    handler: src/functions/dashboard.handler
+    events:
+      - httpApi:
+          path: /dashboard
           method: get
 
   getGameById:
@@ -103,13 +117,6 @@ functions:
       - httpApi:
           path: /games/{gameId}
           method: get
-
-  deleteGameById:
-    handler: src/functions/deleteGameById.handler
-    events:
-      - httpApi:
-          path: /games/{gameId}
-          method: delete
 
   searchGame:
     handler: src/functions/searchGame.handler
