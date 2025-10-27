@@ -3,13 +3,17 @@ import { GameStatus } from "../types/GameStatus"
 import z from "zod"
 
 export const gameSchema = z.object({
-  igdbId: z.string().min(1),
+  igdbId: z.string().min(1).or(z.number()),
   name: z.string().min(1),
   cover: z.string().nullable().optional(),
-  platforms: z.object(),
-  selectedPlatform: z
-    .enum(Platforms.map((p) => p.name) as [string, ...string[]])
-    .optional(),
+  platforms: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      releaseDate: z.string().optional().or(z.number().optional()),
+    }),
+  ),
+  selectedPlatform: z.enum(Platforms).optional(),
   status: z.enum(GameStatus),
   rating: z
     .union([
@@ -24,7 +28,7 @@ export const gameSchema = z.object({
     ])
     .optional(),
   platinum: z.boolean().optional(),
-  completedAt: z.iso.date().nullable().optional(),
+  finishedAt: z.iso.date().nullable().optional(),
 })
 
 export const signUpschema = z.object({
@@ -32,9 +36,7 @@ export const signUpschema = z.object({
   email: z.email(),
   password: z.string().min(8),
   birthdate: z.iso.date(),
-  preferredPlatform: z.enum(
-    Platforms.map((p) => p.name) as [string, ...string[]],
-  ),
+  preferredPlatform: z.enum(Platforms),
 })
 
 export const signInschema = z.object({

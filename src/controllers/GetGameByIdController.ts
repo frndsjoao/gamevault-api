@@ -21,7 +21,7 @@ export class ListGameByIdController {
         rating: true,
         status: true,
         platinum: true,
-        completedAt: true,
+        finishedAt: true,
         createdAt: true,
       },
       where: and(

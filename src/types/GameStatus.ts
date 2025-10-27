@@ -3,7 +3,7 @@ export const GameStatus = [
   "Replay",
   "Playing",
   "Abandoned",
-  "Completed",
+  "Finished",
 ]
 
 export type GameStatusType = (typeof GameStatus)[number]

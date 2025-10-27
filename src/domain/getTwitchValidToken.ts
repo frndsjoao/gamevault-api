@@ -1,8 +1,8 @@
-import { eq } from "drizzle-orm";
-import { getDb } from "../db";
-import { usersTable } from "../db/schema";
-import { getTwitchToken } from "../services/twitchAuth";
-import { addSeconds } from "date-fns";
+import { eq } from "drizzle-orm"
+import { getDb } from "../db"
+import { usersTable } from "../db/schema"
+import { getTwitchToken } from "../services/twitchAuth"
+import { addSeconds } from "date-fns"
 
 function calculateTokenExpirationDate(expiresIn: number): Date {
   return addSeconds(new Date(), expiresIn)
@@ -12,10 +12,14 @@ export async function getTwitchValidToken(userId: string) {
   const db = getDb()
 
   const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, userId)
+    where: eq(usersTable.id, userId),
   })
 
-  if (user?.twitchToken && user.twitchTokenExpireDate && user.twitchTokenExpireDate > new Date()) {
+  if (
+    user?.twitchToken &&
+    user.twitchTokenExpireDate &&
+    user.twitchTokenExpireDate > new Date()
+  ) {
     return user.twitchToken
   }
 
@@ -28,13 +32,12 @@ export async function getTwitchValidToken(userId: string) {
       .set({
         twitchToken: newToken.access_token,
         twitchTokenExpireDate: expiresAt,
-        twitchTokenType: newToken.token_type
+        twitchTokenType: newToken.token_type,
       })
       .where(eq(usersTable.id, userId))
 
     return newToken.access_token
   } catch (error) {
-    console.error('[getTwitchValidToken] Failed to get token:', error)
     throw error
   }
 }

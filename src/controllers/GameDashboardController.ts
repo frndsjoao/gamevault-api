@@ -1,19 +1,20 @@
-import { and, desc, eq, ne } from "drizzle-orm"
+import { and, desc, eq, inArray } from "drizzle-orm"
 import { getDb } from "../db"
 import { gamesTable } from "../db/schema"
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
 import { ok } from "../utils/http"
 
 const columns = {
-  platforms: true,
+  id: true,
+  igdbId: true,
   name: true,
+  cover: true,
+  platforms: true,
   selectedPlatform: true,
   rating: true,
-  platinum: true,
-  id: true,
   status: true,
-  cover: true,
-  completedAt: true,
+  platinum: true,
+  finishedAt: true,
 }
 
 export class GameDashboardController {
@@ -34,12 +35,24 @@ export class GameDashboardController {
       }
     }
 
-    const backlog = await db.query.gamesTable.findMany(defaultQuery("Backlog"))
+    const backlogQuery = () => {
+      return {
+        columns,
+        where: and(
+          eq(gamesTable.userId, userId),
+          inArray(gamesTable.status, ["Backlog", "Replay"]),
+        ),
+        orderBy: desc(gamesTable.createdAt),
+        limit,
+      }
+    }
+
+    const backlog = await db.query.gamesTable.findMany(backlogQuery())
     const playing = await db.query.gamesTable.findMany(defaultQuery("Playing"))
-    const completed = await db.query.gamesTable.findMany(
-      defaultQuery("Completed"),
+    const finished = await db.query.gamesTable.findMany(
+      defaultQuery("Finished"),
     )
 
-    return ok({ backlog, playing, completed })
+    return ok({ backlog, playing, finished })
   }
 }

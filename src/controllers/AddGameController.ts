@@ -28,7 +28,7 @@ export class AddGameController {
         rating: body.rating,
         platinum: body.platinum,
         status: body.status,
-        completedAt: body.completedAt,
+        finishedAt: body.finishedAt,
       })
     } catch (error) {
       return badRequest({ error: "Something went wrong" })

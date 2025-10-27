@@ -6,7 +6,7 @@ A serverless API for managing your personal game collection. Track games, rating
 
 - Add and manage games in your collection
 - Rate games and track platinum achievements
-- Organize by status (Backlog, Playing, Completed, etc.)
+- Organize by status (Backlog, Playing, Finished, etc.)
 - Search games via IGDB integration
 - User authentication with JWT
 
@@ -21,11 +21,13 @@ A serverless API for managing your personal game collection. Track games, rating
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create `.env` file:
+
 ```env
 DATABASE_URL=postgresql://user:password@host.neon.tech/dbname?sslmode=require
 JWT_SECRET=your-secret-key
@@ -34,16 +36,19 @@ TWITCH_CLIENT_SECRET=your-twitch-client-secret
 ```
 
 3. Setup database:
+
 ```bash
 npm run db:push
 ```
 
 4. Run locally:
+
 ```bash
 npm run dev
 ```
 
 5. Deploy to AWS:
+
 ```bash
 npm run deploy
 ```
@@ -55,6 +60,7 @@ All endpoints use `Authorization: Bearer <token>` header (except sign up/in)
 ### Authentication
 
 **POST /signup** - Create account
+
 ```json
 {
   "name": "John Doe",
@@ -66,6 +72,7 @@ All endpoints use `Authorization: Bearer <token>` header (except sign up/in)
 ```
 
 **POST /signin** - Login
+
 ```json
 {
   "email": "john@example.com",
@@ -76,6 +83,7 @@ All endpoints use `Authorization: Bearer <token>` header (except sign up/in)
 ### Games
 
 **POST /games** - Add game
+
 ```json
 {
   "name": "The Last of Us Part II",
@@ -104,21 +112,21 @@ All endpoints use `Authorization: Bearer <token>` header (except sign up/in)
 
 - `Backlog` - Not started
 - `Playing` - Currently playing
-- `Completed` - Finished
+- `Finished` - Finished
 - `On Hold` - Paused
 - `Abandoned` - Won't complete
 - `Replay` - Planning to replay
 
 ## Supported Platforms
 
-| Platform | ID |
-|----------|-----|
-| PC | 6 |
-| PlayStation 5 | 167 |
-| PlayStation 4 | 48 |
+| Platform         | ID  |
+| ---------------- | --- |
+| PC               | 6   |
+| PlayStation 5    | 167 |
+| PlayStation 4    | 48  |
 | Xbox Series X\|S | 169 |
-| Xbox One | 49 |
-| Nintendo Switch | 130 |
+| Xbox One         | 49  |
+| Nintendo Switch  | 130 |
 
 ## Available Commands
 

@@ -35,7 +35,7 @@ export class SignInController {
       name: user.name,
       avatar: user.avatar,
       email: user.email,
-      birthdate: user.preferredPlatform,
+      birthdate: user.birthdate,
       preferredPlatform: user.preferredPlatform,
       createdAt: user.createdAt,
     }

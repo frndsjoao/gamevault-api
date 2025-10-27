@@ -1,5 +1,5 @@
-import { ReleaseDatesIGDB } from "../types/GameIGDBResponse";
-import { Platform } from "../types/Platforms";
+import { ReleaseDatesIGDB } from "../types/GameIGDBResponse"
+import { Platform } from "../types/Platforms"
 
 type NormalizedPlatform = {
   id: string
@@ -7,7 +7,9 @@ type NormalizedPlatform = {
   releaseDate: number | string
 }
 
-export const Platforms = [
+export const Platforms = ["pc", "playstation", "xbox", "nintendo"]
+
+export const PlatformsWithId = [
   { id: 6, name: "PC (Microsoft Windows)" },
   { id: 7, name: "PlayStation" },
   { id: 8, name: "PlayStation 2" },
@@ -16,14 +18,17 @@ export const Platforms = [
   { id: 167, name: "PlayStation 5" },
   { id: 169, name: "Xbox Series X|S" },
   { id: 49, name: "Xbox One" },
-  { id: 130, name: "Nintendo Switch" }
+  { id: 130, name: "Nintendo Switch" },
 ]
 
-export function normalizePlatforms(platforms: Platform[], releaseDates: ReleaseDatesIGDB[]): NormalizedPlatform[] {
+export function normalizePlatforms(
+  platforms: Platform[],
+  releaseDates: ReleaseDatesIGDB[],
+): NormalizedPlatform[] {
   const merged: NormalizedPlatform[] = []
 
   for (const platform of platforms) {
-    const releases = releaseDates.filter(r => r.platform === platform.id)
+    const releases = releaseDates.filter((r) => r.platform === platform.id)
     if (!releases.length) continue
 
     const latestRelease = releases.reduce((a, b) => {
@@ -59,7 +64,8 @@ export function normalizePlatforms(platforms: Platform[], releaseDates: ReleaseD
     if (
       !existing ||
       (typeof p.releaseDate === "number" &&
-        (typeof existing.releaseDate !== "number" || p.releaseDate > existing.releaseDate))
+        (typeof existing.releaseDate !== "number" ||
+          p.releaseDate > existing.releaseDate))
     ) {
       map[id] = { id, name: normalizedName, releaseDate: p.releaseDate }
     }
@@ -73,23 +79,23 @@ const PLATFORM_GROUPS: Record<string, string[]> = {
   xbox: ["Xbox"],
   nintendo: ["Nintendo"],
   pc: ["PC", "Mac"],
-  all: []
+  all: [],
 }
 
 export function getPlatformIdsString(platform: string): string {
   const normalized = platform.toLowerCase()
 
   if (normalized === "all") {
-    const allIds = Platforms.map(p => p.id)
+    const allIds = PlatformsWithId.map((p) => p.id)
     return `(${allIds.join(", ")})`
   }
 
   const searchTerms = PLATFORM_GROUPS[normalized]
   if (!searchTerms) return "()"
 
-  const ids = Platforms
-    .filter(p => searchTerms.some(term => p.name.includes(term)))
-    .map(p => p.id)
+  const ids = PlatformsWithId.filter((p) =>
+    searchTerms.some((term) => p.name.includes(term)),
+  ).map((p) => p.id)
 
   return ids.length ? `(${ids.join(", ")})` : "()"
 }
