@@ -39,7 +39,7 @@ export class SearchGameController {
 
     const formattedGames = games.map((g: GameIGDBResponse) => {
       const cover = g.cover?.image_id
-        ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${g.cover.image_id}.jpg`
+        ? `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${g.cover.image_id}.jpg`
         : null
       const normalizedPlatforms = normalizePlatforms(
         g.platforms,
