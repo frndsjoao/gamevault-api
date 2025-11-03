@@ -1,3 +1,4 @@
+import { ExternalServiceError } from '../errors/AppError'
 import { api } from './api'
 
 interface GetGameSearchByNameProps {
@@ -17,6 +18,10 @@ export async function getGameSearchByName({ clientId, accessToken, query }: GetG
 
     return response.data
   } catch (error: any) {
-    throw error
+    throw new ExternalServiceError('IGDB', {
+      message: error?.response?.data?.message || error?.message || 'Failed to search games',
+      status: error?.response?.status,
+      statusText: error?.response?.statusText
+    })
   }
 }

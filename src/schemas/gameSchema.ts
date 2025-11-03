@@ -28,20 +28,20 @@ export const gameSchema = z.object({
     ])
     .optional(),
   platinum: z.boolean().optional(),
-  finishedAt: z.iso.date().nullable().optional(),
+  finishedAt: z.string().nullable().optional(),
 })
 
 export const signUpschema = z.object({
   name: z.string().min(1),
   email: z.email(),
-  password: z.string().min(8),
+  password: z.string().min(6),
   birthdate: z.iso.date(),
   preferredPlatform: z.enum(Platforms),
 })
 
 export const signInschema = z.object({
   email: z.email(),
-  password: z.string().min(8, { error: "Must have 8 characters" }),
+  password: z.string().min(6, { message: "Must have 6 characters" }),
 })
 
 export const searchGameQuerySchema = z.object({

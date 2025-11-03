@@ -30,7 +30,7 @@ export class GameDashboardController {
           eq(gamesTable.userId, userId),
           eq(gamesTable.status, status),
         ),
-        orderBy: desc(gamesTable.createdAt),
+        orderBy: desc(gamesTable.modifiedAt),
         limit,
       }
     }
@@ -42,7 +42,7 @@ export class GameDashboardController {
           eq(gamesTable.userId, userId),
           inArray(gamesTable.status, ["Backlog", "Replay"]),
         ),
-        orderBy: desc(gamesTable.createdAt),
+        orderBy: desc(gamesTable.modifiedAt),
         limit,
       }
     }

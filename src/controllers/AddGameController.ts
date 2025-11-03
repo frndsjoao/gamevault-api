@@ -1,9 +1,9 @@
 import { getDb } from "../db"
 import { gamesTable } from "../db/schema"
+import { DatabaseError, ValidationError } from "../errors/AppError"
 import { gameSchema } from "../schemas/gameSchema"
-import { parseSchemaErrors } from "../schemas/parseSchemaErrors"
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
-import { badRequest, created } from "../utils/http"
+import { created } from "../utils/http"
 
 export class AddGameController {
   static async handle({
@@ -11,27 +11,27 @@ export class AddGameController {
     body,
   }: ProtectedHttpRequest): Promise<HttpResponse> {
     const db = getDb()
-    const { success, error } = gameSchema.safeParse(body)
+    const { success, error, data } = gameSchema.safeParse(body)
 
     if (!success) {
-      return badRequest({ errors: parseSchemaErrors(error.issues) })
+      throw new ValidationError('Invalid game data', error.issues)
     }
 
     try {
       await db.insert(gamesTable).values({
         userId,
-        igdbId: body.igdbId,
-        name: body.name,
-        cover: body.cover,
-        platforms: body.platforms,
-        selectedPlatform: body.selectedPlatform,
-        rating: body.rating,
-        platinum: body.platinum,
-        status: body.status,
-        finishedAt: body.finishedAt,
+        igdbId: String(data.igdbId),
+        name: data.name,
+        cover: data.cover,
+        platforms: data.platforms,
+        selectedPlatform: data.selectedPlatform,
+        rating: data.rating,
+        platinum: data.platinum,
+        status: data.status,
+        finishedAt: data.finishedAt,
       })
     } catch (error) {
-      return badRequest({ error: "Something went wrong" })
+      throw new DatabaseError('Failed to add game', error)
     }
     return created({ message: "Game added!" })
   }

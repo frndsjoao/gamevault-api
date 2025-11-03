@@ -27,6 +27,8 @@ export function normalizePlatforms(
 ): NormalizedPlatform[] {
   const merged: NormalizedPlatform[] = []
 
+  if (!platforms || !releaseDates) return []
+
   for (const platform of platforms) {
     const releases = releaseDates.filter((r) => r.platform === platform.id)
     if (!releases.length) continue

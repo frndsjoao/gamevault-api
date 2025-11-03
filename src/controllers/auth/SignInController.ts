@@ -1,12 +1,12 @@
 import { eq } from "drizzle-orm"
 import { getDb } from "../../db"
 import { signInschema } from "../../schemas/gameSchema"
-import { parseSchemaErrors } from "../../schemas/parseSchemaErrors"
 import { HttpRequest, HttpResponse } from "../../types/Http"
-import { badRequest, ok, unauthorized } from "../../utils/http"
+import { ok } from "../../utils/http"
 import { usersTable } from "../../db/schema"
 import { compare } from "bcryptjs"
 import { signAccessToken } from "../../lib/jwt"
+import { UnauthorizedError, ValidationError } from "../../errors/AppError"
 
 export class SignInController {
   static async handle({ body }: HttpRequest): Promise<HttpResponse> {
@@ -14,7 +14,7 @@ export class SignInController {
     const { success, error, data } = signInschema.safeParse(body)
 
     if (!success) {
-      return badRequest({ error: parseSchemaErrors(error.issues) })
+      throw new ValidationError("Invalid credentials format", error)
     }
 
     const user = await db.query.usersTable.findFirst({
@@ -22,12 +22,12 @@ export class SignInController {
     })
 
     if (!user) {
-      return unauthorized({ error: "Invalid credentials." })
+      throw new UnauthorizedError("Invalid credentials")
     }
 
     const isPasswordValid = await compare(data.password, user.password)
     if (!isPasswordValid) {
-      return unauthorized({ error: "Invalid credentials." })
+      throw new UnauthorizedError("Invalid credentials")
     }
 
     const response = {

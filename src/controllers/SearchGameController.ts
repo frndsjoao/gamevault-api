@@ -1,7 +1,6 @@
 import { HttpResponse, ProtectedIGDBHttpRequest } from "../types/Http"
-import { badRequest, ok } from "../utils/http"
+import { ok } from "../utils/http"
 import { searchGameQuerySchema } from "../schemas/gameSchema"
-import { parseSchemaErrors } from "../schemas/parseSchemaErrors"
 import { getGameSearchByName } from "../services/igdb"
 import { getTwitchValidToken } from "../domain/getTwitchValidToken"
 import { GameIGDBResponse } from "../types/GameIGDBResponse"
@@ -9,6 +8,7 @@ import {
   getPlatformIdsString,
   normalizePlatforms,
 } from "../lib/handlePlatforms"
+import { ValidationError } from "../errors/AppError"
 
 export class SearchGameController {
   static async handle({
@@ -19,7 +19,7 @@ export class SearchGameController {
       searchGameQuerySchema.safeParse(queryParams)
 
     if (!success) {
-      return badRequest({ errors: parseSchemaErrors(error.issues) })
+      throw new ValidationError("Invalid search parameters", error.issues)
     }
 
     const twitchToken = await getTwitchValidToken(userId)
@@ -37,17 +37,19 @@ export class SearchGameController {
       query: `${searchQuery} ${whereQuery} ${fieldQuery} ${limitQuery}`,
     })
 
-    const formattedGames = games.map((g: GameIGDBResponse) => {
-      const cover = g.cover?.image_id
-        ? `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${g.cover.image_id}.jpg`
-        : null
-      const normalizedPlatforms = normalizePlatforms(
-        g.platforms,
-        g.release_dates,
-      )
+    const formattedGames = games
+      .map((g: GameIGDBResponse) => {
+        const cover = g.cover?.image_id
+          ? `https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${g.cover.image_id}.jpg`
+          : null
+        const normalizedPlatforms = normalizePlatforms(
+          g.platforms || [],
+          g.release_dates || [],
+        )
 
-      return { id: g.id, name: g.name, cover, platforms: normalizedPlatforms }
-    })
+        return { id: g.id, name: g.name, cover, platforms: normalizedPlatforms }
+      })
+      .filter((game: GameIGDBResponse) => game.platforms.length > 0)
 
     return ok({ games: formattedGames })
   }

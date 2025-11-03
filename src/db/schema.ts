@@ -25,6 +25,7 @@ export const gamesTable = pgTable("games", {
   platinum: boolean().default(false),
   finishedAt: date("finished_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  modifiedAt: timestamp("modified_at").defaultNow().notNull(),
 })
 
 export const usersTable = pgTable("users", {
@@ -39,4 +40,5 @@ export const usersTable = pgTable("users", {
   twitchTokenType: varchar("twitch_token_type", { length: 50 }),
   twitchTokenExpireDate: timestamp("twitch_token_expiredate"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  modifiedAt: timestamp("modified_at").defaultNow().notNull(),
 })

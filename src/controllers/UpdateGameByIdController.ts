@@ -1,10 +1,14 @@
 import { and, eq } from "drizzle-orm"
 import { getDb } from "../db"
 import { gamesTable } from "../db/schema"
+import {
+  DatabaseError,
+  NotFoundError,
+  ValidationError,
+} from "../errors/AppError"
 import { gameSchema } from "../schemas/gameSchema"
-import { parseSchemaErrors } from "../schemas/parseSchemaErrors"
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
-import { badRequest, notFound, ok } from "../utils/http"
+import { ok } from "../utils/http"
 
 export class UpdateGameByIdController {
   static async handle({
@@ -13,10 +17,10 @@ export class UpdateGameByIdController {
     params,
   }: ProtectedHttpRequest): Promise<HttpResponse> {
     const db = getDb()
-    const { success, error } = gameSchema.safeParse(body)
+    const { success, error, data } = gameSchema.safeParse(body)
 
     if (!success) {
-      return badRequest({ error: parseSchemaErrors(error.issues) })
+      throw new ValidationError("Invalid game data", error.issues)
     }
 
     const game = await db.query.gamesTable.findFirst({
@@ -27,16 +31,20 @@ export class UpdateGameByIdController {
     })
 
     if (!game) {
-      return notFound({ error: "Game not found." })
+      throw new NotFoundError("Game")
     }
 
     try {
       await db
         .update(gamesTable)
-        .set(body)
+        .set({
+          ...data,
+          igdbId: String(data.igdbId),
+          modifiedAt: new Date(),
+        })
         .where(eq(gamesTable.id, params.gameId))
     } catch (error) {
-      return badRequest({ error: "Something went wrong." })
+      throw new DatabaseError("Failed to update game", error)
     }
 
     return ok({ message: "Game updated!" })

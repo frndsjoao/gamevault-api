@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm"
 import { getDb } from "../db"
 import { gamesTable } from "../db/schema"
+import { NotFoundError } from "../errors/AppError"
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
-import { notFound, ok } from "../utils/http"
+import { ok } from "../utils/http"
 
 export class ListGameByIdController {
   static async handle({
@@ -31,7 +32,7 @@ export class ListGameByIdController {
     })
 
     if (!game) {
-      return notFound({ error: "Game not found." })
+      throw new NotFoundError('Game')
     }
 
     return ok({ game })

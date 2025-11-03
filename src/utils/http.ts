@@ -21,3 +21,11 @@ export function notFound(body?: Record<string, any>): HttpResponse {
 export function unauthorized(body?: Record<string, any>): HttpResponse {
   return { statusCode: 401, body }
 }
+
+export function internalServerError(body?: Record<string, any>): HttpResponse {
+  return { statusCode: 500, body }
+}
+
+export function serviceUnavailable(body?: Record<string, any>): HttpResponse {
+  return { statusCode: 503, body }
+}

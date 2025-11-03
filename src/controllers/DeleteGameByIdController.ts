@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm"
 import { getDb } from "../db"
 import { gamesTable } from "../db/schema"
+import { DatabaseError, NotFoundError } from "../errors/AppError"
 import { HttpResponse, ProtectedHttpRequest } from "../types/Http"
-import { badRequest, notFound, ok } from "../utils/http"
+import { ok } from "../utils/http"
 
 export class DeleteGameByIdController {
   static async handle({
@@ -19,7 +20,7 @@ export class DeleteGameByIdController {
     })
 
     if (!game) {
-      return notFound({ error: "Game not found" })
+      throw new NotFoundError('Game')
     }
 
     try {
@@ -29,7 +30,7 @@ export class DeleteGameByIdController {
           and(eq(gamesTable.id, params.gameId), eq(gamesTable.userId, userId)),
         )
     } catch (err) {
-      return badRequest({ error: "Something went wrong." })
+      throw new DatabaseError('Failed to delete game', err)
     }
 
     return ok({ message: "Game deleted." })

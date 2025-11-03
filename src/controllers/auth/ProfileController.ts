@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm"
 import { getDb } from "../../db"
 import { HttpResponse, ProtectedHttpRequest } from "../../types/Http"
-import { ok, unauthorized } from "../../utils/http"
+import { ok } from "../../utils/http"
 import { usersTable } from "../../db/schema"
+import { NotFoundError } from "../../errors/AppError"
 
 export class ProfileController {
   static async handle({ userId }: ProtectedHttpRequest): Promise<HttpResponse> {
@@ -20,7 +21,7 @@ export class ProfileController {
     })
 
     if (!user) {
-      return unauthorized({ error: "User not found." })
+      throw new NotFoundError('User')
     }
 
     return ok(user)

@@ -1,11 +1,11 @@
 import { eq } from "drizzle-orm"
 import { getDb } from "../../db"
 import { signUpschema } from "../../schemas/gameSchema"
-import { parseSchemaErrors } from "../../schemas/parseSchemaErrors"
 import { HttpRequest, HttpResponse } from "../../types/Http"
-import { badRequest, conflict, created } from "../../utils/http"
+import { created } from "../../utils/http"
 import { usersTable } from "../../db/schema"
 import { hash } from "bcryptjs"
+import { ConflictError, DatabaseError, ValidationError } from "../../errors/AppError"
 
 export class SignUpController {
   static async handle({ body }: HttpRequest): Promise<HttpResponse> {
@@ -13,7 +13,7 @@ export class SignUpController {
     const { success, error, data } = signUpschema.safeParse(body)
 
     if (!success) {
-      return badRequest({ error: parseSchemaErrors(error.issues) })
+      throw new ValidationError('Invalid user data', error.issues)
     }
 
     const userAlreadyExists = await db.query.usersTable.findFirst({
@@ -22,22 +22,30 @@ export class SignUpController {
     })
 
     if (userAlreadyExists) {
-      return conflict({ error: "This email is already in use!" })
+      throw new ConflictError('This email is already in use', { email: data.email })
     }
 
     const hashedPassword = await hash(data.password, 10)
 
-    const [user] = await db
-      .insert(usersTable)
-      .values({
-        ...data,
-        password: hashedPassword,
-      })
-      .returning({ id: usersTable.id })
+    try {
+      const [user] = await db
+        .insert(usersTable)
+        .values({
+          ...data,
+          password: hashedPassword,
+        })
+        .returning({ id: usersTable.id })
 
-    if (user.id) {
+      if (!user?.id) {
+        throw new DatabaseError('Failed to create user - no ID returned')
+      }
+
       return created({ success: true })
+    } catch (error) {
+      if (error instanceof DatabaseError) {
+        throw error
+      }
+      throw new DatabaseError('Failed to create user', error)
     }
-    return badRequest({ error: "Something went wrong" })
   }
 }
