@@ -16,17 +16,10 @@ export const gameSchema = z.object({
   selectedPlatform: z.enum(Platforms).optional(),
   status: z.enum(GameStatus),
   rating: z
-    .union([
-      z
-        .number()
-        .min(0, { message: "Rating must be at least 0" })
-        .max(5, { message: "Rating must be at most 5" })
-        .refine((v) => Number.isFinite(v) && Number.isInteger(v * 2), {
-          message: "Rating must be a multiple of 0.5",
-        }),
-      z.null(),
-    ])
-    .optional(),
+    .number()
+    .max(5, { message: "Rating must be at most 5" })
+    .optional()
+    .nullable(),
   platinum: z.boolean().optional(),
   finishedAt: z.string().nullable().optional(),
 })
